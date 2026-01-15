@@ -1,0 +1,66 @@
+{% extends 'registro/base.html' %}
+
+{% block contenido %}
+
+<div class="card-neon">
+    <h3 class="mb-4">📂 Sistema de Gestión y Control Documental</h3>
+
+    <!-- 🔍 BUSCADOR -->
+    <form method="get" class="d-flex gap-2 mb-4">
+        <input
+            type="text"
+            name="q"
+            class="form-control"
+            placeholder="Buscar por item, denominación, caja u observación..."
+            value="{{ query }}"
+        >
+        <button type="submit" class="btn btn-neon">
+            🔍 Buscar
+        </button>
+    </form>
+
+    <!-- ➕ NUEVO REGISTRO -->
+    <a href="{% url 'crear' %}" class="btn btn-neon mb-3">
+        ➕ Nuevo Registro
+    </a>
+
+    <!-- 📋 TABLA -->
+    <table class="table table-bordered align-middle">
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Denominación</th>
+                <th>Caja</th>
+                <th>Hojas</th>
+                <th>Observación</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for r in registros %}
+            <tr>
+                <td>{{ r.item }}</td>
+                <td>{{ r.denominacion }}</td>
+                <td>{{ r.n_caja }}</td>
+                <td>{{ r.n_hojas }}</td>
+                <td>{{ r.observacion }}</td>
+                <td class="text-center">
+                    <a href="{% url 'editar' r.id %}" class="btn btn-sm btn-warning-neon">✏️</a>
+                    <a href="{% url 'eliminar' r.id %}" class="btn btn-sm btn-neon"
+                       onclick="return confirm('¿Seguro que deseas eliminar este registro?')">
+                        🗑️
+                    </a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="text-center text-warning">
+                    No existen registros
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
