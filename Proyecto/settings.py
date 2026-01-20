@@ -6,9 +6,9 @@ import dj_database_url
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Seguridad
-SECRET_KEY = 'django-insecure-c*x$mmr(az=@2!d#r=yb#nnt^3^dsu5^sn@o^a^81u_62q)l57'
-DEBUG = False
-ALLOWED_HOSTS = ['.onrender.com']
+SECRET_KEY = os.environ.get('SECRET_KEY', 'unsafe-secret-key')
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
+ALLOWED_HOSTS = ['*']
 
 # Aplicaciones instaladas
 INSTALLED_APPS = [
@@ -24,6 +24,7 @@ INSTALLED_APPS = [
 # Middleware
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -61,6 +62,10 @@ DATABASES = {
 }
 
 
+
+
+
+
 # Validación de contraseñas
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
@@ -76,8 +81,7 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Archivos estáticos
-STATIC_URL = 'static/'
+
 
 # Tipo de campo por defecto
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
@@ -86,3 +90,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/lista/'  # Ajusta a tu vista principal después de login
 LOGOUT_REDIRECT_URL = '/accounts/login/'
+
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
